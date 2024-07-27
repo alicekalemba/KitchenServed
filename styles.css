@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    margin: 20px;
+  }
+  
+  /* Container to center the content */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Heading styles */
+  h2 {
+    color: #4caf50;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Special styles for specific headings */
+  #breakfast-title {
+    color: #ff9800;
+    border-bottom-color: #ff9800;
+  }
+  
+  #lunch-title {
+    color: brown;
+    border-bottom-color: brown;
+  }
+  
+  #dinner-title {
+    color: #3f51b5;
+    border-bottom-color: #3f51b5;
+  }
+  
+  /* List styles */
+  ul {
+    padding-left: 0;
+    margin-bottom: 20px;
+    list-style-type: none; /* Remove bullet points */
+  }
+  
+  ul li {
+    margin-bottom: 10px;
+  }
+  
+  /* Sub-list styles */
+  ul ul {
+    list-style-type: none; /* Remove bullet points */
+    padding-left: 20px;
+  }
+  
+  ul ul li {
+    margin-bottom: 5px;
+  }
+  
+  /* Ingredient s style */
+  .ingredients {
+    font-style: italic;
+  }
+  
+  /* Cooking time style */
+  .cooking-time {
+    color: blue;
+  }
+  
+  /* Rating style */
+  .rating {
+    color: red;
+  }
+  
+  /* Menu item style */
+  .menu-item {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .menu-item:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Nested list inside each menu item */
+  .menu-item ul {
+    padding-left: 0;
+  }
+  
