@@ -10,3 +10,15 @@ class IngredientUpdate(BaseModel):
   store_id: Optional[int] = None
   name: Optional[str] = None
   price: Optional[float] = None
+
+class RecipeCreate(BaseModel):
+  meal_id: int
+  recipe_name: str
+  ingredients: str
+  cooking_time: str
+
+class RecipeUpdate(BaseModel):
+  meal_id: Optional[int] = None
+  recipe_name: Optional[str] = None
+  ingredients: Optional[str] = None
+  cooking_time: Optional[str] = None
