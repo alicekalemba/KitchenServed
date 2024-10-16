@@ -1,10 +1,9 @@
-# backend/recipe_endpoints.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime
-from .models import Recipe, SessionLocal
-from .schemas import RecipeCreate, RecipeUpdate
-
+from typing import List, Optional
+from .models import Recipe,Meal, SessionLocal
+from .schemas import RecipeCreate, RecipeResponse, RecipeUpdate
 
 router = APIRouter()
 
@@ -15,32 +14,37 @@ def get_db():
   finally:
     db.close()
 
-@router.get("/recipes")
-def read_recipes(db: Session = Depends(get_db)):
-  recipes = db.query(Recipe).all()
-  return [
-    {
-      "meal_name": recipe.meal.name,
-      "meal_id": recipe.meal_id,
-      "recipe_name": recipe.recipe_name,
-      "ingredients": recipe.ingredients,
-      "cooking_time": recipe.cooking_time
-    }
-    for recipe in recipes
-  ]
+def find_meal_id_for_name_like(db: Session, name: str) -> int:
+  meal = db.query(Meal).filter(Meal.name.ilike(f"%{name}%")).first()
+  if meal:
+    return meal.meal_id
+  return None
 
-@router.get("/recipes")
-def read_recipes_by_meal(meal_id: int, db: Session = Depends(get_db)):
-  recipes = db.query(Recipe).filter(Recipe.meal_id == meal_id).all()
+@router.get("/recipes", response_model=List[RecipeResponse])
+def read_recipes(
+    time_now: Optional[datetime] = Query(None),
+    db: Session = Depends(get_db)
+):
+  if time_now is not None:
+    if time_now.hour < 12:
+      meal_id = find_meal_id_for_name_like(db, "Breakfast")
+    elif time_now.hour < 18:
+      meal_id = find_meal_id_for_name_like(db, "Lunch")
+    else:
+      meal_id = find_meal_id_for_name_like(db, "Dinner")
+
+    recipes = db.query(Recipe).filter(Recipe.meal_id == meal_id).all()
+  else:
+    recipes = db.query(Recipe).all()
+
   return [
-    {
-      "meal_name": recipe.meal.name,
-      "meal_id": recipe.meal_id,
-      "recipe_name": recipe.recipe_name,
-      "ingredients": recipe.ingredients,
-      "cooking_time": recipe.cooking_time
-    }
-    for recipe in recipes
+    RecipeResponse(
+        meal_name=recipe.meal.name,
+        meal_id=recipe.meal_id,
+        recipe_name=recipe.recipe_name,
+        ingredients=recipe.ingredients,
+        cooking_time=recipe.cooking_time
+    ) for recipe in recipes
   ]
 
 @router.post("/recipes")

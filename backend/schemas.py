@@ -17,6 +17,13 @@ class RecipeCreate(BaseModel):
   ingredients: str
   cooking_time: str
 
+class RecipeResponse(BaseModel):
+  meal_name: str
+  meal_id: int
+  recipe_name: str
+  ingredients: str
+  cooking_time: str
+
 class RecipeUpdate(BaseModel):
   meal_id: Optional[int] = None
   recipe_name: Optional[str] = None
