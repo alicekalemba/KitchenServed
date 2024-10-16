@@ -56,3 +56,15 @@ def delete_ingredient(ingredient_id: int, db: Session = Depends(get_db)):
   db.delete(db_ingredient)
   db.commit()
   return {"detail": "Ingredient deleted successfully"}
+
+@router.get("/ingredients")
+def read_ingredients(db: Session = Depends(get_db)):
+  ingredients = db.query(Ingredient).all()
+  return [
+    {
+      "store_id": ingredient.store_id,
+      "name": ingredient.name,
+      "price": ingredient.price
+    }
+    for ingredient in ingredients
+  ]
