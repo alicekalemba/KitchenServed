@@ -1,6 +1,6 @@
 provider "aws" {
-  region  = "us-east-1"  # Ensure this matches your AWS CLI profile region
-  profile = "power3"  # Replace with your AWS CLI profile name
+  region  = "us-east-1"
+  profile = "power3"
 }
 
 # Create an S3 bucket for static website hosting.

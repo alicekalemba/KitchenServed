@@ -1,0 +1,55 @@
+# do not run RDS already exists
+
+# Create a DB subnet group
+resource "aws_db_instance" "postgres" {
+  allocated_storage      = 20
+  engine                 = "postgres"
+  engine_version         = "15.7"
+  instance_class         = "db.t3.micro"
+  db_name                = var.rds_db_name
+  username               = var.rds_username
+  password               = var.rds_password
+  parameter_group_name   = "default.postgres15"  # Updated to match the new version
+  publicly_accessible    = true
+  multi_az               = false
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  db_subnet_group_name   = aws_db_subnet_group.rds.name
+  skip_final_snapshot    = true
+
+  tags = {
+    Name = "qube-postgres"
+  }
+}
+
+resource "aws_db_subnet_group" "rds" {
+  name       = "qube-db-subnet-group"
+  subnet_ids = module.vpc.public_subnets
+
+  tags = {
+    Name = "qube-db-subnet-group"
+  }
+}
+
+resource "aws_security_group" "rds_sg" {
+  name        = "rds-sg"
+  description = "Security group for RDS instance"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "rds-sg"
+  }
+}
