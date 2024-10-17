@@ -23,6 +23,7 @@ def find_meal_id_for_name_like(db: Session, name: str) -> int:
 @router.get("/recipes", response_model=List[RecipeResponse])
 def read_recipes(
     time_now: Optional[datetime] = Query(None),
+    meal_name: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
   if time_now is not None:
@@ -33,6 +34,9 @@ def read_recipes(
     else:
       meal_id = find_meal_id_for_name_like(db, "Dinner")
 
+    recipes = db.query(Recipe).filter(Recipe.meal_id == meal_id).all()
+  elif meal_name is not None:
+    meal_id = find_meal_id_for_name_like(db, meal_name)
     recipes = db.query(Recipe).filter(Recipe.meal_id == meal_id).all()
   else:
     recipes = db.query(Recipe).all()
