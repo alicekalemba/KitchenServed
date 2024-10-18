@@ -41,6 +41,7 @@ class Store(Base):
   created_by = Column(String(255))
   updated_date = Column(TIMESTAMP)
   updated_by = Column(String(255))
+  ingredients = relationship("Ingredient", back_populates="store")
 
 class Ingredient(Base):
   __tablename__ = "ingredient"
@@ -52,6 +53,7 @@ class Ingredient(Base):
   created_by = Column(String(255))
   updated_date = Column(TIMESTAMP)
   updated_by = Column(String(255))
+  store = relationship("Store", back_populates="ingredients")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

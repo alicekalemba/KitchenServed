@@ -63,6 +63,8 @@ def read_ingredients(db: Session = Depends(get_db)):
   return [
     {
       "store_id": ingredient.store_id,
+      "store_name": ingredient.store.name,
+      "store_location": ingredient.store.location,
       "name": ingredient.name,
       "price": ingredient.price
     }

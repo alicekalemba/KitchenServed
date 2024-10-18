@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Importing React Router
-import Home from './Home';  // Import Home component
-import Meals from './Meals';  // Import MealsScreen component
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Home from './Home';
+import Meals from './Meals';
+import Stores from './Stores';
+
 
 const Header = () => (
     <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -9,7 +11,7 @@ const Header = () => (
       <nav>
         <Link to="/" className="mx-2 hover:text-gray-300">Home</Link>
         <Link to="/meals" className="mx-2 hover:text-gray-300">Meals</Link>
-        <Link to="/wheretobuy" className="mx-2 hover:text-gray-300">Where To Buy</Link>
+        <Link to="/stores" className="mx-2 hover:text-gray-300">Where To Buy</Link>
       </nav>
     </header>
 );
@@ -36,6 +38,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/meals" element={<Meals />} />
+          <Route path="/stores" element={<Stores />} />
         </Routes>
         <Footer />
       </div>
