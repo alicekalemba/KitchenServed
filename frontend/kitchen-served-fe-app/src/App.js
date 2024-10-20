@@ -27,14 +27,6 @@ const Footer = () => (
     </footer>
 );
 
-export const RecipeCard = ({ recipe }) => (
-    <div className="bg-white p-4 rounded shadow mb-4">
-      <h3 className="font-bold">{recipe.recipe_name}</h3>
-      <p>Ingredients: {recipe.ingredients}</p>
-      <p>Cooking Time: {recipe.cooking_time}</p>
-    </div>
-);
-
 const App = () => {
   return (
       <Router>

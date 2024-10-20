@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { RecipeCard } from './App';
+import { RecipeCard } from './components/common/Recipe';
+import {getMealTypeByTime} from "./utils/timeUtils";
 
 
 const Meals = () => {
@@ -16,6 +17,11 @@ const Meals = () => {
       console.error('Error fetching recipes:', error);
     }
   };
+
+  useEffect(() => {
+    const initialMealType = getMealTypeByTime();
+    fetchRecipes(initialMealType);
+  }, []);
 
   return (
     <div className="p-8">

@@ -20,6 +20,7 @@ class RecipeCreate(BaseModel):
 class RecipeResponse(BaseModel):
   meal_name: str
   meal_id: int
+  recipe_id: int
   recipe_name: str
   ingredients: str
   cooking_time: str
