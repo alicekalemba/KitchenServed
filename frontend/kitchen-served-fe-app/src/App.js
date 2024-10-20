@@ -6,21 +6,23 @@ import Stores from './Stores';
 
 const Header = () => (
     <header className="bg-gray-800 text-white">
-      <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="text-xl font-bold">KITCHEN SERVED</div>
-        <nav>
-          <Link to="/" className="mx-2 hover:text-gray-300">Home</Link>
-          <Link to="/meals" className="mx-2 hover:text-gray-300">Meals</Link>
-          <Link to="/stores" className="mx-2 hover:text-gray-300">Where To Buy</Link>
-        </nav>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          <div className="text-xl font-bold">KITCHEN SERVED</div>
+          <nav>
+            <Link to="/" className="mx-2 hover:text-gray-300">Home</Link>
+            <Link to="/meals" className="mx-2 hover:text-gray-300">Meals</Link>
+            <Link to="/stores" className="mx-2 hover:text-gray-300">Where To Buy</Link>
+          </nav>
+        </div>
       </div>
     </header>
 );
 
 const Footer = () => (
-    <footer className="bg-gray-800 text-white py-4">
-      <div className="container mx-auto px-4 text-center">
-        &copy; 2024 Kitchen Served. All rights reserved.
+    <footer className="bg-gray-800 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+        © 2024 Kitchen Served. All rights reserved.
       </div>
     </footer>
 );
@@ -38,7 +40,7 @@ const App = () => {
       <Router>
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow container mx-auto px-4 py-8">
+          <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/meals" element={<Meals />} />
