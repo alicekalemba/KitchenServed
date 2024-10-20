@@ -10,8 +10,16 @@ const Home = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       const now = new Date();
+      const localTimeString = now.toLocaleString('sv-SE', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+      const [datePart, timePart] = localTimeString.split(' ');
+      const timeZoneOffset = now.getTimezoneOffset();
+      const offsetHours = Math.abs(Math.floor(timeZoneOffset / 60)).toString().padStart(2, '0');
+      const offsetMinutes = (Math.abs(timeZoneOffset) % 60).toString().padStart(2, '0');
+      const offsetSign = timeZoneOffset > 0 ? '-' : '+';
+      const localISOString = `${datePart}T${timePart}${offsetSign}${offsetHours}:${offsetMinutes}`;
+
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/recipes?time_now=${now.toISOString()}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/recipes?time_now=${localISOString}`);
         setRecipes(response.data);
         if (response.data.length > 0) {
           setMealType(response.data[0].meal_name);

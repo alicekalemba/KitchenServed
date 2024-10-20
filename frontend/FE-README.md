@@ -1,6 +1,7 @@
 # Kitchen Served Frontend
 
 ## Run: 
+cd `frontend`
 install dependencies - `npm install`
 start the app - `npm start`
 
