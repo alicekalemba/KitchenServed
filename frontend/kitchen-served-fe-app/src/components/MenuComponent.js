@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Menu = ({ recipes }) => {
+const MenuComponent = ({ recipes }) => {
   return (
       <div className="max-w-4xl mx-auto p-8 bg-[#f5e8d3]" style={{ backgroundImage: "url('/paper-texture.png')" }}>
         <div className="border-4 border-[#8B4513] p-6 rounded-lg">
@@ -20,4 +20,4 @@ const Menu = ({ recipes }) => {
   );
 };
 
-export default Menu;
+export default MenuComponent;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { RecipeCard } from './components/common/Recipe';
+import { RecipeCard } from './components/common/RecipeCard';
 import {getMealTypeByTime} from "./utils/timeUtils";
 
 

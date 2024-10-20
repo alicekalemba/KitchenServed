@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { RecipeCard } from './components/common/Recipe';
+import { RecipeCard } from './components/common/RecipeCard';
 import { ChefHat, Plus } from 'lucide-react';
 import { getTimeOfDay } from "./utils/timeUtils";
 import AddRecipeDialog from './components/home/AddRecipeDialog';
 import toast, { Toaster } from 'react-hot-toast';
+import MenuComponent from "./components/MenuComponent";
 
 const Home = () => {
   const [timeOfDay, setTimeOfDay] = useState('');
@@ -140,6 +141,10 @@ const Home = () => {
                   <p className="text-center text-white bg-gray-800 bg-opacity-50 p-4 rounded">No recipes available at the moment.</p>
               )}
             </div>
+
+            {/*<div className="min-h-screen bg-[#faf3e8]">*/}
+            {/*  <MenuComponent recipes={recipes}/>*/}
+            {/*</div>*/}
           </div>
         </div>
 
