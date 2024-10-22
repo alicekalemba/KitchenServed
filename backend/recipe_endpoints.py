@@ -1,3 +1,5 @@
+import logging
+import json
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -5,7 +7,12 @@ from typing import List, Optional
 from .models import Recipe,Meal, SessionLocal
 from .schemas import RecipeCreate, RecipeResponse, RecipeUpdate
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
+
+def model_to_dict(obj):
+  return {c.name: getattr(obj, c.name) for c in obj.__table__.columns}
 
 def get_db():
   db = SessionLocal()
@@ -41,10 +48,15 @@ def read_recipes(
   else:
     recipes = db.query(Recipe).all()
 
+  # logger.info(f"Successfully fetched {len(recipes)} recipes")
+  # recipes_dict = [model_to_dict(recipe) for recipe in recipes]
+  # logger.info(json.dumps(recipes_dict, indent=2, default=str))
+
   return [
     RecipeResponse(
         meal_name=recipe.meal.name,
         meal_id=recipe.meal_id,
+        recipe_id=recipe.recipe_id,
         recipe_name=recipe.recipe_name,
         ingredients=recipe.ingredients,
         cooking_time=recipe.cooking_time
@@ -67,3 +79,14 @@ def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
   db.commit()
   db.refresh(db_recipe)
   return db_recipe
+
+@router.delete("/recipes/{recipe_id}")
+def delete_ingredient(recipe_id: int, db: Session = Depends(get_db)):
+  db_recipe = db.query(Recipe).filter(Recipe.recipe_id == recipe_id).first()
+  if not db_recipe:
+    raise HTTPException(status_code=404, detail="Recipe not found")
+
+  db.delete(db_recipe)
+  db.commit()
+  return {"detail": "Recipe deleted successfully"}
+
