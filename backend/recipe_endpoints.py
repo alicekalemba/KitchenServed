@@ -27,7 +27,7 @@ def find_meal_id_for_name_like(db: Session, name: str) -> int:
     return meal.meal_id
   return None
 
-@router.get("/recipes", response_model=List[RecipeResponse])
+@router.get("/api/recipes", response_model=List[RecipeResponse])
 def read_recipes(
     time_now: Optional[datetime] = Query(None),
     meal_name: Optional[str] = Query(None),
@@ -63,7 +63,7 @@ def read_recipes(
     ) for recipe in recipes
   ]
 
-@router.post("/recipes")
+@router.post("/api/recipes")
 def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
   db_recipe = Recipe(
       meal_id=recipe.meal_id,
@@ -80,7 +80,7 @@ def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
   db.refresh(db_recipe)
   return db_recipe
 
-@router.delete("/recipes/{recipe_id}")
+@router.delete("/api/recipes/{recipe_id}")
 def delete_ingredient(recipe_id: int, db: Session = Depends(get_db)):
   db_recipe = db.query(Recipe).filter(Recipe.recipe_id == recipe_id).first()
   if not db_recipe:

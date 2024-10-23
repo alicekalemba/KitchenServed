@@ -1,8 +1,3 @@
-provider "aws" {
-  region  = var.aws_region
-  profile = var.aws_profile
-}
-
 # Fetch available availability zones for better distribution of resources
 data "aws_availability_zones" "available" {}
 
