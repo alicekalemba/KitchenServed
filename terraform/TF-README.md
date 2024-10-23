@@ -18,4 +18,20 @@ aws configure --profile qube
   sudo systemctl enable docker
   sudo usermod -a -G docker ec2-user
 ```
-- To run the docker image, ssh into the instance via AWS console. Follow instructions in BE-Readme.md
+### Run BE and FE apps in ec2
+SSH into the EC2 instance.
+Install and start Docker (see TF-README.md for instructions. May not be needed if userscript is working).
+Authenticate Docker to ECR (may need to install the AWS CLI on the EC2 instance if it's not already available):
+`aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975050311957.dkr.ecr.us-east-1.amazonaws.com`
+
+Run the images:
+`docker run --pull always -d -p 8000:8000 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
+`docker run --pull always -d -p 3000:3000 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-fe-latest`
+
+Access the BE-app on `100.25.82.37`. sample curl:
+`curl --location --request GET 'http://100.25.82.37:8000/recipes'`
+Access the FE-app on `100.25.82.37:3000`
+
+### Troubleshooting EC2
+Available disc space on ec2: `df -h`
+clean up docker images: `docker system prune -a -f`
