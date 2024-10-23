@@ -27,16 +27,4 @@ Push to ECR:
 `docker push 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
 
 ### Run in ec2
-SSH into the EC2 instance.
-Install and start Docker (see TF-README.md for instructions. May not be needed if userscript is working).
-Authenticate Docker to ECR (may need to install the AWS CLI on the EC2 instance if it's not already available):
-`aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975050311957.dkr.ecr.us-east-1.amazonaws.com`
-
-Pull the image:
-`sudo docker pull 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
-
-Run the image:
-`sudo docker run --pull always -p 8000:8000 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
-
-Access the app on `44.203.43.176`. sample curl:
-`curl --location --request GET 'http://44.203.43.176:8000/recipes'`
+ - See TF-README.md for instructions on how to run the BE and FE apps in an EC2 instance.
