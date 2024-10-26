@@ -44,6 +44,7 @@ Other handy commands:
 ### Run BE and FE apps in ec2
 #### FE
 (make sure destination folder exists: ssh and then `mkdir -p /home/ec2-user/frontend/kitchen-served-fe-app`)
+update  permissions to allow copying: `sudo chmod -R u+w /home/ec2-user/frontend/kitchen-served-fe-app/build/ && sudo chown -R ec2-user:ec2-user /home/ec2-user/frontend/kitchen-served-fe-app/build/`
 copy FE build over to ec2: `scp -i kitchen-served-key.pem -r ../frontend/kitchen-served-fe-app/build ec2-user@100.25.82.37:/home/ec2-user/frontend/kitchen-served-fe-app/`
 
 SSH into the EC2 and Update permissions to allow nginx to serve the files:
