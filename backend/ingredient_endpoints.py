@@ -13,7 +13,7 @@ def get_db():
   finally:
     db.close()
 
-@router.post("/ingredients")
+@router.post("/api/ingredients")
 def create_ingredient(ingredient: IngredientCreate, db: Session = Depends(get_db)):
   db_ingredient = Ingredient(
       store_id=ingredient.store_id,
@@ -27,7 +27,7 @@ def create_ingredient(ingredient: IngredientCreate, db: Session = Depends(get_db
   db.refresh(db_ingredient)
   return db_ingredient
 
-@router.put("/ingredients/{ingredient_id}")
+@router.put("/api/ingredients/{ingredient_id}")
 def update_ingredient(ingredient_id: int, ingredient: IngredientUpdate, db: Session = Depends(get_db)):
   db_ingredient = db.query(Ingredient).filter(Ingredient.ingredient_id == ingredient_id).first()
   if not db_ingredient:
@@ -47,7 +47,7 @@ def update_ingredient(ingredient_id: int, ingredient: IngredientUpdate, db: Sess
   db.refresh(db_ingredient)
   return db_ingredient
 
-@router.delete("/ingredients/{ingredient_id}")
+@router.delete("/api/ingredients/{ingredient_id}")
 def delete_ingredient(ingredient_id: int, db: Session = Depends(get_db)):
   db_ingredient = db.query(Ingredient).filter(Ingredient.ingredient_id == ingredient_id).first()
   if not db_ingredient:
@@ -57,7 +57,7 @@ def delete_ingredient(ingredient_id: int, db: Session = Depends(get_db)):
   db.commit()
   return {"detail": "Ingredient deleted successfully"}
 
-@router.get("/ingredients")
+@router.get("/api/ingredients")
 def read_ingredients(db: Session = Depends(get_db)):
   ingredients = db.query(Ingredient).all()
   return [

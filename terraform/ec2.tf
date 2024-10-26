@@ -1,3 +1,22 @@
+# Generate private key
+resource "tls_private_key" "kitchen_served_private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+# Create AWS key pair using the generated public key
+resource "aws_key_pair" "kitchen_served_key" {
+  key_name   = "kitchen-served-key"
+  public_key = tls_private_key.kitchen_served_private_key.public_key_openssh
+}
+
+# Save private key to file
+resource "local_file" "private_key" {
+  content         = tls_private_key.kitchen_served_private_key.private_key_pem
+  filename        = "kitchen-served-key.pem"
+  file_permission = "0400"
+}
+
 # Define the EC2 security group
 resource "aws_security_group" "ec2_sg" {
   vpc_id = module.vpc.vpc_id
@@ -17,18 +36,25 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   ingress {
+     from_port   = 443
+     to_port     = 443
+     protocol    = "tcp"
+     cidr_blocks = ["0.0.0.0/0"] # Allow HTTPS traffic on port 443
+  }
+
+  ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allow traffic for BE app on port 8000
   }
 
-    ingress {
-      from_port   = 3000
-      to_port     = 3000
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"] # Allow traffic on port 3000
-    }
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow traffic on port 3000
+  }
 
   egress {
     from_port   = 0
@@ -40,6 +66,7 @@ resource "aws_security_group" "ec2_sg" {
   tags = {
     Name = "KitchenServedEC2SecurityGroup"
     Project = "KitchenServed"
+    DoNotStop = "true"
   }
 }
 
@@ -117,6 +144,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   associate_public_ip_address = true
   iam_instance_profile   = aws_iam_instance_profile.ec2_instance_profile.name
+  key_name               = aws_key_pair.kitchen_served_key.key_name
 
   tags = {
     Name = "KitchenServedEC2Instance"
