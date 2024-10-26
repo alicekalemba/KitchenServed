@@ -24,6 +24,33 @@ test: `http://<ec2-public-ip>` eg `http://100.25.82.37`
   `sudo nginx -t`
   `sudo systemctl restart nginx`
 
+### Set up SSL: (specific to Amazon Linux 2)
+Install python3 and pip if not already installed
+`sudo yum install python3 python3-pip -y`
+
+fix an issue with urllib version mismatch
+`sudo pip3 uninstall urllib3` 
+`sudo pip3 install 'urllib3<2.0'`
+
+Install certbot and the nginx plugin using pip3
+`sudo pip3 install certbot certbot-nginx`
+
+Create a symlink to make the certbot command available
+`sudo ln -s /usr/local/bin/certbot /usr/bin/certbot`
+
+Request an SSL Certificate:
+`sudo certbot --nginx -d kitchenserved.com -d www.kitchenserved.com`
+
+Automatically Renew Certificates: Certbot automatically sets up a cron job to renew your certificate. However, you can manually test renewal with:
+`sudo certbot renew --dry-run`
+
+Check nginx configuration after certbot modifications:
+`sudo nginx -t`
+
+f the test passes, reload nginx:
+`sudo systemctl reload nginx`
+
+Verify HTTPS: Once the certificate is installed, visit  `https://kitchenserved.com`
 
 ### Troubleshooting:
 - nginx error logs: `sudo tail -f /var/log/nginx/error.log`

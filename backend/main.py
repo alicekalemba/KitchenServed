@@ -17,7 +17,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allow requests from React app
+    allow_origins=["http://localhost:3000", "https://kitchenserved.com"],  # Allow requests from FE app
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

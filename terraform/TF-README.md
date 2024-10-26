@@ -42,14 +42,14 @@ Other handy commands:
 - ssh: `ssh -i kitchen-served-key.pem ec2-user@100.25.82.37`
 
 ### Run BE and FE apps in ec2
+#### FE
 (make sure destination folder exists: ssh and then `mkdir -p /home/ec2-user/frontend/kitchen-served-fe-app`)
 copy FE build over to ec2: `scp -i kitchen-served-key.pem -r ../frontend/kitchen-served-fe-app/build ec2-user@100.25.82.37:/home/ec2-user/frontend/kitchen-served-fe-app/`
- 
-Update permissions to allow nginx to serve the files:
+
+SSH into the EC2 and Update permissions to allow nginx to serve the files:
 sudo chmod -R 755 /home/ec2-user/frontend/kitchen-served-fe-app/build && sudo chown -R ec2-user:nginx /home/ec2-user/frontend/kitchen-served-fe-app/build && sudo chmod 755 /home && sudo chmod 755 /home/ec2-user && sudo chmod -R 755 /home/ec2-user/frontend/kitchen-served-fe-app && sudo chown -R nginx:nginx /home/ec2-user/frontend/kitchen-served-fe-app/build/ && sudo chmod -R 755 /home/ec2-user/frontend/kitchen-served-fe-app/build/
 
-
-SSH into the EC2 instance.
+#### BE
 Install and start Docker (see TF-README.md for instructions. May not be needed if userscript is working).
 Authenticate Docker to ECR (may need to install the AWS CLI on the EC2 instance if it's not already available):
 `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975050311957.dkr.ecr.us-east-1.amazonaws.com`
@@ -61,6 +61,8 @@ Access the BE-app on `100.25.82.37` (Static Elastic IP). sample curl:
 `curl --location --request GET 'http://100.25.82.37:8000/recipes'`
 Access the FE-app on `100.25.82.37:3000`
 
+##### Nginx
+restart nginx: `sudo systemctl restart nginx`
 
 ### Troubleshooting EC2
 Available disc space on ec2: `df -h`

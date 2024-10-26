@@ -6,7 +6,7 @@ install dependencies - `npm install`
 start the app - `npm start`
 
 ## Prod build:
-create an optimized production build : `npm run build`. To copy the files into ec2, check the TF-README.md.
+create an optimized production build : `npm run build`. To copy the files into ec2, check the TF-README.md in the `Run BE and FE apps in ec2` section.
 
 
 ## Running with Docker
