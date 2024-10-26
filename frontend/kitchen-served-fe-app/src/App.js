@@ -8,12 +8,16 @@ const Header = () => (
     <header className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <div className="text-xl font-bold">KITCHEN SERVED</div>
-          <nav>
-            <Link to="/" className="mx-2 hover:text-gray-300">Home</Link>
-            <Link to="/meals" className="mx-2 hover:text-gray-300">Meals</Link>
-            <Link to="/stores" className="mx-2 hover:text-gray-300">Where To Buy</Link>
-          </nav>
+         <Link to="/">
+           <button className="text-xl font-bold hover:text-gray-300">
+             KITCHEN SERVED
+           </button>
+         </Link>
+         <nav>
+           <Link to="/" className="mx-2 hover:text-gray-300">Home</Link>
+           <Link to="/meals" className="mx-2 hover:text-gray-300">Meals</Link>
+           <Link to="/stores" className="mx-2 hover:text-gray-300">Where To Buy</Link>
+         </nav>
         </div>
       </div>
     </header>
