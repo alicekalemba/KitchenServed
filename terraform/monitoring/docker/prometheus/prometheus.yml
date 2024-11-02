@@ -1,0 +1,41 @@
+# monitoring/docker/prometheus/prometheus.yml
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # alertmanager:9093
+
+rule_files:
+  - "alerts.yml"
+
+scrape_configs:
+  # KitchenServed FastAPI Monitoring
+  - job_name: 'kitchenserved'
+    static_configs:
+      - targets: ['${KITCHEN_SERVED_IP}:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'kitchenserved_(requests_total|request_duration_seconds|active_db_connections|recipes_total)'
+        action: keep
+
+  # Qube SpringBoot Monitoring
+  - job_name: 'qube'
+    static_configs:
+      - targets: ['${QUBE_IP}:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 15s
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'qube_(.*)'
+        action: keep
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

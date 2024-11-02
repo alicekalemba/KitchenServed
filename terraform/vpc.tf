@@ -6,7 +6,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.0.0"
 
-  name = "qube-vpc"
+  name = "qube-and-ks-vpc"
   cidr = var.vpc_cidr
 
   azs             = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1]]
@@ -20,6 +20,6 @@ module "vpc" {
   map_public_ip_on_launch = true  # Ensure instances in public subnets get public IPs
 
   tags = {
-    Name = "kitchen-served-vpc"
+    Name = "qube-and-ks-vpc"
   }
 }

@@ -18,7 +18,7 @@ resource "local_file" "private_key" {
 }
 
 # Define the EC2 security group
-resource "aws_security_group" "ec2_sg" {
+resource "aws_security_group" "ec2_sg" { # this is the ks ec2 security group. failed to rename it to ks_ec2_sg
   vpc_id = module.vpc.vpc_id
 
   ingress {

@@ -59,3 +59,16 @@ variable "private_subnet_cidr" {
   type        = string
   default     = "10.0.2.0/24"
 }
+
+# Admin IP CIDR for restricted access
+variable "admin_ip_cidr" {
+  description = "CIDR block for administrative access"
+  type        = string
+}
+
+# Grafana admin password
+variable "grafana_password" {
+  description = "Admin password for Grafana dashboard"
+  type        = string
+  sensitive   = true
+}

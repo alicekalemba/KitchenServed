@@ -13,3 +13,9 @@ rds_password   = "qube0123456789!"
 vpc_cidr           = "10.0.0.0/16"
 public_subnet_cidr = "10.0.1.0/24"
 private_subnet_cidr = "10.0.2.0/24"
+
+# Admin access
+admin_ip_cidr = "192.168.1.241/32"
+
+# Grafana configuration
+grafana_password = "qube_ks_grafana1@"

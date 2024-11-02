@@ -1,0 +1,103 @@
+groups:
+  - name: KitchenServed
+    rules:
+      # API Health
+      - alert: KitchenServedHighErrorRate
+        expr: |
+          sum(rate(kitchenserved_requests_total{status_code=~"5.."}[5m])) 
+          / 
+          sum(rate(kitchenserved_requests_total[5m])) 
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: kitchenserved
+        annotations:
+          summary: High error rate on KitchenServed API
+          description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+
+      - alert: KitchenServedSlowEndpoint
+        expr: |
+          histogram_quantile(0.95, 
+            sum(rate(kitchenserved_request_duration_seconds_bucket{endpoint=~"/api/.*"}[5m])) 
+            by (le, endpoint)
+          ) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: kitchenserved
+        annotations:
+          summary: Slow endpoint detected on KitchenServed
+          description: "{{ $labels.endpoint }} is responding slowly (95th percentile > 1s)"
+
+      - alert: KitchenServedHighDBConnections
+        expr: kitchenserved_active_db_connections > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: kitchenserved
+        annotations:
+          summary: High number of DB connections
+          description: "{{ $value }} active database connections in KitchenServed"
+
+      - alert: KitchenServedLowRecipeCount
+        expr: kitchenserved_recipes_total < 5
+        for: 5m
+        labels:
+          severity: info
+          service: kitchenserved
+        annotations:
+          summary: Low recipe count
+          description: "Only {{ $value }} recipes in the database"
+
+  - name: Qube
+    rules:
+      # Spring Boot Health
+      - alert: QubeHighErrorRate
+        expr: |
+          sum(rate(http_server_requests_seconds_count{status=~"5..",application="qube"}[5m])) 
+          / 
+          sum(rate(http_server_requests_seconds_count{application="qube"}[5m])) 
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: qube
+        annotations:
+          summary: High error rate on Qube API
+          description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+
+      - alert: QubeHighResponseTime
+        expr: |
+          http_server_requests_seconds{quantile="0.95",application="qube"} > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: qube
+        annotations:
+          summary: Slow responses in Qube
+          description: "95th percentile response time is {{ $value }}s"
+
+      - alert: QubeHighMemoryUsage
+        expr: |
+          jvm_memory_used_bytes{application="qube"} 
+          / 
+          jvm_memory_max_bytes{application="qube"} 
+          > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: qube
+        annotations:
+          summary: High JVM memory usage in Qube
+          description: "Memory usage is at {{ $value | humanizePercentage }}"
+
+      - alert: QubeHighCPUUsage
+        expr: process_cpu_usage{application="qube"} > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: qube
+        annotations:
+          summary: High CPU usage in Qube
+          description: "CPU usage is at {{ $value | humanizePercentage }}"
