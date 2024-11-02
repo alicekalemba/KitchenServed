@@ -47,17 +47,17 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
 
         <div className="mt-4 flex justify-end">
           <button
-            type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Add Ingredient
-          </button>
-          <button
             type="button"
             onClick={onClose}
             className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
             Cancel
+          </button>
+          <button
+            type="submit"
+            className="ml-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-green-600"
+          >
+            Add Ingredient
           </button>
         </div>
       </form>

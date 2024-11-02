@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { RecipeCard } from './components/common/RecipeCard';
-import {getMealTypeByTime} from "./utils/timeUtils";
-
+import { getMealTypeByTime } from "./utils/timeUtils";  // Removed duplicate import
+import { Plus } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
+import AddRecipeDialog from './components/home/AddRecipeDialog';
 
 const Meals = () => {
   const [mealType, setMealType] = useState('');
   const [recipes, setRecipes] = useState([]);
+  const [isAddRecipeOpen, setIsAddRecipeOpen] = useState(false);  // State to control Add Recipe Dialog
+  const [newRecipe, setNewRecipe] = useState({
+    meal_id: '',
+    recipe_name: '',
+    ingredients: '',
+    cooking_time: ''
+  });
 
   const fetchRecipes = async (meal) => {
     try {
@@ -23,8 +32,28 @@ const Meals = () => {
     fetchRecipes(initialMealType);
   }, []);
 
+  const handleAddRecipe = async () => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/recipes`, newRecipe);
+      setRecipes([...recipes, response.data]);
+      setIsAddRecipeOpen(false);
+      setNewRecipe({ meal_id: '', recipe_name: '', ingredients: '', cooking_time: '' });
+      toast.success('Recipe added successfully!', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error('Error adding recipe:', error);
+      toast.error('Failed to add recipe. Please try again.', {
+        duration: 5000,
+        position: 'top-center',
+      });
+    }
+  };
+
   return (
     <div className="p-8">
+      <Toaster />
       <h2 className="text-2xl font-bold mb-4">Choose a Meal</h2>
       <div className="grid grid-cols-3 gap-4">
         <button
@@ -60,6 +89,26 @@ const Meals = () => {
             )}
           </div>
         </div>
+      )}
+
+      {/* Floating Action Button for Adding Recipe */}
+      <button
+          onClick={() => setIsAddRecipeOpen(true)}
+          className="fixed right-6 bottom-6 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 group z-50"
+      >
+        <Plus className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300" />
+        <span className="ml-2 font-semibold hidden group-hover:inline">Add Recipe</span>
+      </button>
+
+      {/* Add Recipe Dialog */}
+      {isAddRecipeOpen && (
+        <AddRecipeDialog
+            isOpen={isAddRecipeOpen}
+            onClose={() => setIsAddRecipeOpen(false)}
+            onAddRecipe={handleAddRecipe}
+            newRecipe={newRecipe}
+            setNewRecipe={setNewRecipe}
+        />
       )}
     </div>
   );
