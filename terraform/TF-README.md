@@ -56,7 +56,7 @@ Authenticate Docker to ECR (may need to install the AWS CLI on the EC2 instance 
 `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975050311957.dkr.ecr.us-east-1.amazonaws.com`
 
 Run the images:
-`docker run --pull always -d -p 8000:8000 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
+`docker run --restart always --pull always -d -p 8000:8000 975050311957.dkr.ecr.us-east-1.amazonaws.com/kitchen-served-repo:kitchen-served-be-latest`
 
 Access the BE-app on `100.25.82.37` (Static Elastic IP). sample curl:
 `curl --location --request GET 'http://100.25.82.37:8000/recipes'`
