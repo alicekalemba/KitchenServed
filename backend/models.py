@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.schema import MetaData
 
-DATABASE_URL = "postgresql://pricepulse:pricepulse123@pricepulsedb2.cji8ayyckyn5.us-east-2.rds.amazonaws.com/postgres"
+DATABASE_URL = "postgresql://ks_user:codekitchen1!@ks-db.cji8ayyckyn5.us-east-2.rds.amazonaws.com/postgres"
 
 # Specify the schema
 metadata = MetaData(schema="kitchen_served")

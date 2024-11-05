@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
-import AddIngredientDialog from './components/home/AddIngredientDialog';
+import AddIngredientDialog from './components/wheretobuy/AddIngredientDialog';
 
 const IngredientCard = ({ ingredient }) => (
   <div className="bg-white p-4 rounded shadow mb-4">
@@ -25,9 +25,9 @@ const Stores = () => {
   const [filteredIngredients, setFilteredIngredients] = useState([]);
   const [isAddIngredientOpen, setIsAddIngredientOpen] = useState(false);  // State for Add Ingredient Dialog
   const [newIngredient, setNewIngredient] = useState({
-    ingredient_name: '',
+    name: '',
     price: '',
-    store_name: ''
+    store_id: ''
   });
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const Stores = () => {
     const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/ingredients`, newIngredient);
     setIngredients([...ingredients, response.data]);
     setIsAddIngredientOpen(false);
-    setNewIngredient({ name: '', price: '', store_name: '' });
+    setNewIngredient({ name: '', price: '', store_id: '' });
     toast.success('Ingredient added successfully!', {
       duration: 3000,
       position: 'top-center',

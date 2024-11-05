@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog from './Dialog';
+import Dialog from '../common/Dialog';
 
 const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, setNewIngredient }) => {
   const handleSubmit = (e) => {
@@ -12,12 +12,25 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
       <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-4">Add New Ingredient</h2>
         <div className="space-y-4">
+            {/* Store Selection */}
+          <select
+            className="w-full p-2 border rounded"
+            value={newIngredient.store_id}
+            onChange={(e) => setNewIngredient({ ...newIngredient, store_id: e.target.value })}
+            required
+          >
+            <option value="">Select store</option>
+            <option value="1">Vons</option>
+            <option value="2">Costco</option>
+            <option value="3">Hannam</option>
+          </select>
+
           {/* Ingredient Name */}
           <input
             className="w-full p-2 border rounded"
             placeholder="Ingredient Name"
-            value={newIngredient.ingredient_name}
-            onChange={(e) => setNewIngredient({ ...newIngredient, ingredient_name: e.target.value })}
+            value={newIngredient.name}
+            onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })}
             required
           />
 
@@ -30,19 +43,6 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
             onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })}
             required
           />
-
-          {/* Store Selection */}
-          <select
-            className="w-full p-2 border rounded"
-            value={newIngredient.store_name}
-            onChange={(e) => setNewIngredient({ ...newIngredient, store_name: e.target.value })}
-            required
-          >
-            <option value="">Select store</option>
-            <option value="Vons">Vons</option>
-            <option value="Costco">Costco</option>
-            <option value="Hannam">Hannam</option>
-          </select>
         </div>
 
         <div className="mt-4 flex justify-end">
