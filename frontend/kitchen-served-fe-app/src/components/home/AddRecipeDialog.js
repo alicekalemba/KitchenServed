@@ -1,5 +1,5 @@
 import React from 'react';
-import Dialog from './Dialog';
+import Dialog from '../common/Dialog';
 
 const AddRecipeDialog = ({ isOpen, onClose, onAddRecipe, newRecipe, setNewRecipe }) => {
   const handleSubmit = (e) => {
