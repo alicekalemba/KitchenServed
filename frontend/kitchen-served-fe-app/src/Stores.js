@@ -3,21 +3,8 @@ import axios from 'axios';
 import { Plus } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import AddIngredientDialog from './components/wheretobuy/AddIngredientDialog';
+import { IngredientCard } from './components/wheretobuy/IngredientCard';
 
-const IngredientCard = ({ ingredient }) => (
-  <div className="bg-white p-4 rounded shadow mb-4">
-    <h3 className="font-bold">{ingredient.name}</h3>
-    <p>Price: ${ingredient.price}</p>
-    <a
-      href={ingredient.store_location}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-500 hover:underline"
-    >
-      {ingredient.store_name}
-    </a>
-  </div>
-);
 
 const Stores = () => {
   const [ingredients, setIngredients] = useState([]);
