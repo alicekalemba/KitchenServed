@@ -3,27 +3,13 @@ import axios from 'axios';
 import { Plus } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import AddIngredientDialog from './components/wheretobuy/AddIngredientDialog';
-
-const IngredientCard = ({ ingredient }) => (
-  <div className="bg-white p-4 rounded shadow mb-4">
-    <h3 className="font-bold">{ingredient.name}</h3>
-    <p>Price: ${ingredient.price}</p>
-    <a
-      href={ingredient.store_location}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-500 hover:underline"
-    >
-      {ingredient.store_name}
-    </a>
-  </div>
-);
+import IngredientCard from './components/wheretobuy/IngredientCard';
 
 const Stores = () => {
   const [ingredients, setIngredients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredIngredients, setFilteredIngredients] = useState([]);
-  const [isAddIngredientOpen, setIsAddIngredientOpen] = useState(false);  // State for Add Ingredient Dialog
+  const [isAddIngredientOpen, setIsAddIngredientOpen] = useState(false);
   const [newIngredient, setNewIngredient] = useState({
     name: '',
     price: '',
@@ -58,24 +44,23 @@ const Stores = () => {
   };
 
   const handleAddIngredient = async () => {
-  try {
-    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/ingredients`, newIngredient);
-    setIngredients([...ingredients, response.data]);
-    setIsAddIngredientOpen(false);
-    setNewIngredient({ name: '', price: '', store_id: '' });
-    toast.success('Ingredient added successfully!', {
-      duration: 3000,
-      position: 'top-center',
-    });
-  } catch (error) {
-    console.error('Error adding ingredient:', error);
-    toast.error('Failed to add ingredient. Please try again.', {
-      duration: 5000,
-      position: 'top-center',
-    });
-  }
-};
-
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/ingredients`, newIngredient);
+      setIngredients([...ingredients, response.data]);
+      setIsAddIngredientOpen(false);
+      setNewIngredient({ name: '', price: '', store_id: '' });
+      toast.success('Ingredient added successfully!', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error('Error adding ingredient:', error);
+      toast.error('Failed to add ingredient. Please try again.', {
+        duration: 5000,
+        position: 'top-center',
+      });
+    }
+  };
 
   const handleDeleteIngredient = async (ingredientId) => {
     try {
@@ -94,12 +79,11 @@ const Stores = () => {
     }
   };
 
-
   return (
     <div className="p-8">
+      <Toaster />
       <h2 className="text-2xl font-bold mb-4">Available Ingredients</h2>
 
-      {/* Search Input */}
       <input
         type="text"
         placeholder="Search by name, price, store..."
@@ -111,14 +95,15 @@ const Stores = () => {
       <div>
         {filteredIngredients.length > 0 ? (
           filteredIngredients.map((ingredient, index) => (
-            <IngredientCard key={index} ingredient={ingredient} />
+              <div key={index} >
+                <IngredientCard ingredient={ingredient} onDelete={handleDeleteIngredient} />
+              </div>
           ))
         ) : (
           <p>No ingredients found.</p>
         )}
       </div>
 
-      {/* Floating Action Button for Adding Ingredient */}
       <button
         onClick={() => setIsAddIngredientOpen(true)}
         className="fixed right-6 bottom-6 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 group z-50"
@@ -127,7 +112,6 @@ const Stores = () => {
         <span className="ml-2 font-semibold hidden group-hover:inline">Add Ingredient</span>
       </button>
 
-      {/* Add Ingredient Dialog */}
       {isAddIngredientOpen && (
         <AddIngredientDialog
           isOpen={isAddIngredientOpen}
