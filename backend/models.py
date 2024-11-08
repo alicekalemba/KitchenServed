@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.schema import MetaData
 
+# todo Alice extract these to .env file
 DATABASE_URL = "postgresql://ks_user:codekitchen1!@ks-db.cji8ayyckyn5.us-east-2.rds.amazonaws.com/postgres"
 
 # Specify the schema
@@ -26,6 +27,7 @@ class Recipe(Base):
   recipe_name = Column(String(50), nullable=False)
   ingredients = Column(Text, nullable=False)
   cooking_time = Column(String(20))
+  image_url = Column(String(255))
   created_date = Column(TIMESTAMP)
   created_by = Column(String(255))
   updated_date = Column(TIMESTAMP)
