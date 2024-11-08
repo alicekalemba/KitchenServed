@@ -4,6 +4,7 @@ cd `backend`
 create venv - `python -m venv venv`
 activate the venv - `source venv/bin/activate`
 `pip install -r requirements.txt`
+create a new `.env` file. copy the content of the `.env-example` and set the values there
 run app - `cd ..` && `uvicorn backend.main:app --reload`
 
 ## Docker
