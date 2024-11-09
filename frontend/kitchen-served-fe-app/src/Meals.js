@@ -33,8 +33,23 @@ const Meals = () => {
   }, []);
 
   const handleAddRecipe = async () => {
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/recipes`, newRecipe);
+    const formData = new FormData();
+  formData.append("recipe_name", newRecipe.recipe_name);
+  formData.append("meal_id", newRecipe.meal_id);
+  formData.append("ingredients", newRecipe.ingredients);
+  formData.append("cooking_time", newRecipe.cooking_time);
+
+  // Add the image file if selected
+  if (newRecipe.image) {
+    formData.append("image", newRecipe.image);
+  }
+
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/recipes`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
       setRecipes([...recipes, response.data]);
       setIsAddRecipeOpen(false);
       setNewRecipe({ meal_id: '', recipe_name: '', ingredients: '', cooking_time: '' });
