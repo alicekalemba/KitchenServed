@@ -1,7 +1,13 @@
 import React from 'react';
 import Dialog from '../common/Dialog';
 
-const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, setNewIngredient }) => {
+const AddIngredientDialog = ({
+  isOpen,
+  onClose,
+  onAddIngredient,
+  newIngredient,
+  setNewIngredient,
+}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onAddIngredient();
@@ -12,11 +18,13 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
       <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-4">Add New Ingredient</h2>
         <div className="space-y-4">
-            {/* Store Selection */}
+          {/* Store Selection */}
           <select
             className="w-full p-2 border rounded"
             value={newIngredient.store_id}
-            onChange={(e) => setNewIngredient({ ...newIngredient, store_id: e.target.value })}
+            onChange={(e) =>
+              setNewIngredient({ ...newIngredient, store_id: e.target.value })
+            }
             required
           >
             <option value="">Select store</option>
@@ -30,7 +38,9 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
             className="w-full p-2 border rounded"
             placeholder="Ingredient Name"
             value={newIngredient.name}
-            onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })}
+            onChange={(e) =>
+              setNewIngredient({ ...newIngredient, name: e.target.value })
+            }
             required
           />
 
@@ -40,7 +50,9 @@ const AddIngredientDialog = ({ isOpen, onClose, onAddIngredient, newIngredient, 
             className="w-full p-2 border rounded"
             placeholder="Price"
             value={newIngredient.price}
-            onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })}
+            onChange={(e) =>
+              setNewIngredient({ ...newIngredient, price: e.target.value })
+            }
             required
           />
         </div>

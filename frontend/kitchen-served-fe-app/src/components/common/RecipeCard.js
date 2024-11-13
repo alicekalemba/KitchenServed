@@ -37,7 +37,11 @@ export const RecipeCard = ({ recipe, onDelete }) => {
       {/* Image Section on the Right */}
       <div className="w-1/5 ml-4">
         <img
-          src={recipe.image_url ? `https://kitchen-served-images.s3.us-east-2.amazonaws.com/${recipe.image_url}` : placeholderImage}
+          src={
+            recipe.image_url
+              ? `https://kitchen-served-images.s3.us-east-2.amazonaws.com/${recipe.image_url}`
+              : placeholderImage
+          }
           alt={recipe.recipe_name}
           className="w-full h-40 object-cover rounded"
         />

@@ -13,13 +13,15 @@ const Stores = () => {
   const [newIngredient, setNewIngredient] = useState({
     name: '',
     price: '',
-    store_id: ''
+    store_id: '',
   });
 
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/ingredients`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/ingredients`
+        );
         setIngredients(response.data);
         setFilteredIngredients(response.data);
       } catch (error) {
@@ -34,10 +36,11 @@ const Stores = () => {
     const value = event.target.value.toLowerCase();
     setSearchTerm(value);
 
-    const filtered = ingredients.filter(ingredient =>
-      ingredient.name.toLowerCase().includes(value) ||
-      ingredient.price.toString().includes(value) ||
-      ingredient.store_name.toLowerCase().includes(value)
+    const filtered = ingredients.filter(
+      (ingredient) =>
+        ingredient.name.toLowerCase().includes(value) ||
+        ingredient.price.toString().includes(value) ||
+        ingredient.store_name.toLowerCase().includes(value)
     );
 
     setFilteredIngredients(filtered);
@@ -45,7 +48,10 @@ const Stores = () => {
 
   const handleAddIngredient = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/ingredients`, newIngredient);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/ingredients`,
+        newIngredient
+      );
       setIngredients([...ingredients, response.data]);
       setIsAddIngredientOpen(false);
       setNewIngredient({ name: '', price: '', store_id: '' });
@@ -64,8 +70,14 @@ const Stores = () => {
 
   const handleDeleteIngredient = async (ingredientId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/ingredients/${ingredientId}`);
-      setIngredients(ingredients.filter(ingredient => ingredient.ingredient_id !== ingredientId));
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/ingredients/${ingredientId}`
+      );
+      setIngredients(
+        ingredients.filter(
+          (ingredient) => ingredient.ingredient_id !== ingredientId
+        )
+      );
       toast.success('Ingredient deleted successfully!', {
         duration: 3000,
         position: 'top-center',
@@ -95,9 +107,12 @@ const Stores = () => {
       <div>
         {filteredIngredients.length > 0 ? (
           filteredIngredients.map((ingredient, index) => (
-              <div key={index} >
-                <IngredientCard ingredient={ingredient} onDelete={handleDeleteIngredient} />
-              </div>
+            <div key={index}>
+              <IngredientCard
+                ingredient={ingredient}
+                onDelete={handleDeleteIngredient}
+              />
+            </div>
           ))
         ) : (
           <p>No ingredients found.</p>
@@ -109,7 +124,9 @@ const Stores = () => {
         className="fixed right-6 bottom-6 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 group z-50"
       >
         <Plus className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300" />
-        <span className="ml-2 font-semibold hidden group-hover:inline">Add Ingredient</span>
+        <span className="ml-2 font-semibold hidden group-hover:inline">
+          Add Ingredient
+        </span>
       </button>
 
       {isAddIngredientOpen && (

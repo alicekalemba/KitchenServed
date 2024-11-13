@@ -1,6 +1,11 @@
 import React from 'react';
 import { Utensils } from 'lucide-react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+} from 'react-router-dom';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

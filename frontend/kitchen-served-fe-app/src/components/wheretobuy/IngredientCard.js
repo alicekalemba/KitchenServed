@@ -19,7 +19,7 @@ const IngredientCard = ({ ingredient, onDelete }) => {
   }, []);
 
   const handleDelete = () => {
-  console.log("Ingredient is", JSON.stringify(ingredient, null, 2));
+    console.log('Ingredient is', JSON.stringify(ingredient, null, 2));
     onDelete(ingredient.ingredient_id);
     setIsMenuOpen(false);
   };
