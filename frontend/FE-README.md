@@ -35,3 +35,32 @@ To build the production app, run `npm run build`. it uses the .env.production fi
 app was created by `npx create-react-app menu-app`
 dependencies added: `npm install tailwindcss lucide-react`, `npm install axios`, `npm install react-hot-toast`
 tail wind css setup: `npx tailwindcss init -p`
+
+## Formatting and linting
+To format javascript, html and css, use the  [vscode prettier linting tool](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+### Install:
+
+Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
+`ext install esbenp.prettier-vscode`
+
+Open use settings with `Cmd + Shift + P> Preferences: Open user Settings  (JSON)`
+
+add: 
+``` bash
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+"editor.formatOnSave": true,
+```
+
+To use the tool;
+Format all files in a folder (recommended to run this in the  kitchen-served-fe-app dir before opening a PR):
+ `npx prettier --write .` (This will use the dev dependeny in the package.json)
+
+These will use the plugin installed in VS code:
+
+``` bash
+1. CMD + Shift + P -> Format Document
+OR
+1. Select the text you want to Prettify
+2. CMD + Shift + P -> Format Selection  
+```

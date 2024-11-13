@@ -1,0 +1,35 @@
+# Use semicolons at the end of every statement
+semi: true
+
+# Prefer single quotes over double quotes
+singleQuote: true
+
+# Use trailing commas where valid in ES5 (objects, arrays, etc.)
+trailingComma: 'es5'
+
+# The maximum line length before Prettier wraps the code
+printWidth: 80
+
+# Indent lines with 2 spaces
+tabWidth: 2
+
+# Use spaces instead of tabs for indentation
+useTabs: false
+
+# Include spaces between brackets in object literals
+bracketSpacing: true
+
+# Include parentheses around a sole arrow function parameter
+arrowParens: 'always'
+
+# Use LF for new lines (standard on Unix and macOS)
+endOfLine: 'lf'
+
+# Use double quotes in JSX
+jsxSingleQuote: false
+
+# Put the closing bracket of a multi-line JSX element at the end of the last line
+jsxBracketSameLine: false
+
+# Maintain existing wrapping in Markdown files
+proseWrap: 'preserve'

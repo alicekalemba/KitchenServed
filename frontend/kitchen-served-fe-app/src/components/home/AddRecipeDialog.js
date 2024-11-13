@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import Dialog from '../common/Dialog';
 
-const AddRecipeDialog = ({ isOpen, onClose, onAddRecipe, newRecipe, setNewRecipe }) => {
+const AddRecipeDialog = ({
+  isOpen,
+  onClose,
+  onAddRecipe,
+  newRecipe,
+  setNewRecipe,
+}) => {
   // Handle image file selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -21,7 +27,9 @@ const AddRecipeDialog = ({ isOpen, onClose, onAddRecipe, newRecipe, setNewRecipe
           <select
             className="w-full p-2 border rounded"
             value={newRecipe.meal_id}
-            onChange={(e) => setNewRecipe({ ...newRecipe, meal_id: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setNewRecipe({ ...newRecipe, meal_id: parseInt(e.target.value) })
+            }
             required
           >
             <option value="">Select meal type</option>
@@ -33,21 +41,27 @@ const AddRecipeDialog = ({ isOpen, onClose, onAddRecipe, newRecipe, setNewRecipe
             className="w-full p-2 border rounded"
             placeholder="Recipe Name"
             value={newRecipe.recipe_name}
-            onChange={(e) => setNewRecipe({ ...newRecipe, recipe_name: e.target.value })}
+            onChange={(e) =>
+              setNewRecipe({ ...newRecipe, recipe_name: e.target.value })
+            }
             required
           />
           <textarea
             className="w-full p-2 border rounded"
             placeholder="Ingredients"
             value={newRecipe.ingredients}
-            onChange={(e) => setNewRecipe({ ...newRecipe, ingredients: e.target.value })}
+            onChange={(e) =>
+              setNewRecipe({ ...newRecipe, ingredients: e.target.value })
+            }
             required
           />
           <input
             className="w-full p-2 border rounded"
             placeholder="Cooking Time (e.g., 10 min)"
             value={newRecipe.cooking_time}
-            onChange={(e) => setNewRecipe({ ...newRecipe, cooking_time: e.target.value })}
+            onChange={(e) =>
+              setNewRecipe({ ...newRecipe, cooking_time: e.target.value })
+            }
             required
           />
           {/* Image Upload Input */}

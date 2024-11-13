@@ -6,23 +6,21 @@ import Stores from './Stores';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 
-
-
 const App = () => {
   return (
-      <Router>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/meals" element={<Meals />} />
-              <Route path="/stores" element={<Stores />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/meals" element={<Meals />} />
+            <Route path="/stores" element={<Stores />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 };
 
