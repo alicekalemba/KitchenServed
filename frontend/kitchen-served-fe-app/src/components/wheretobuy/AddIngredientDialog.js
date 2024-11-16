@@ -44,9 +44,9 @@ const AddIngredientDialog = ({
             required
           />
 
-          {/* Price */}
+          {/* Price Input */}
           <input
-            type="number"
+            type="text"
             className="w-full p-2 border rounded"
             placeholder="Price"
             value={newIngredient.price}
@@ -54,6 +54,16 @@ const AddIngredientDialog = ({
               setNewIngredient({ ...newIngredient, price: e.target.value })
             }
             required
+          />
+
+          {/* Image File Input */}
+          <input
+            type="file"
+            accept="image/*"
+            className="w-full p-2 border rounded"
+            onChange={(e) =>
+              setNewIngredient({ ...newIngredient, image: e.target.files[0] })
+            }
           />
         </div>
 

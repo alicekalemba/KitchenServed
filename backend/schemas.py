@@ -16,6 +16,8 @@ class IngredientUpdate(BaseModel):
 class IngredientResponse(BaseModel):
     ingredient_id: int
     store_id: int
+    store_name: str
+    store_location: str
     name: str
     price: float
     image_url: Optional[str] = None

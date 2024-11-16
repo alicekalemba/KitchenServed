@@ -14,6 +14,7 @@ const Stores = () => {
     name: '',
     price: '',
     store_id: '',
+    image: null,
   });
 
   useEffect(() => {
@@ -47,14 +48,28 @@ const Stores = () => {
   };
 
   const handleAddIngredient = async () => {
+    const formData = new FormData();
+    formData.append('name', newIngredient.name);
+    formData.append('price', newIngredient.price);
+    formData.append('store_id', newIngredient.store_id);
+
+    if (newIngredient.image) {
+      formData.append('image', newIngredient.image);
+    }
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/ingredients`,
-        newIngredient
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       setIngredients([...ingredients, response.data]);
       setIsAddIngredientOpen(false);
-      setNewIngredient({ name: '', price: '', store_id: '' });
+      setNewIngredient({ name: '', price: '', store_id: '', image: null });
       toast.success('Ingredient added successfully!', {
         duration: 3000,
         position: 'top-center',
@@ -92,22 +107,32 @@ const Stores = () => {
   };
 
   return (
-    <div className="p-8">
+    <div>
       <Toaster />
-      <h2 className="text-2xl font-bold mb-4">Available Ingredients</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">
+        Available Ingredients
+      </h2>
 
-      <input
-        type="text"
-        placeholder="Search by name, price, store..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="mb-4 p-2 border border-gray-300 rounded w-full"
-      />
+      {/* Search Input */}
+      <div className="max-w-3xl mx-auto">
+        <input
+          type="text"
+          placeholder="Search by name, price, store..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="mb-6 p-3 border border-gray-300 rounded w-full text-lg"
+        />
+      </div>
 
-      <div>
+      {/* Ingredients cards */}
+
+      <div className="max-w-3xl mx-auto">
         {filteredIngredients.length > 0 ? (
           filteredIngredients.map((ingredient, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              className="mb-6 transform hover:scale-105 transition-transform duration-200"
+            >
               <IngredientCard
                 ingredient={ingredient}
                 onDelete={handleDeleteIngredient}
@@ -115,20 +140,24 @@ const Stores = () => {
             </div>
           ))
         ) : (
-          <p>No ingredients found.</p>
+          <p className="text-center text-white bg-gray-800 bg-opacity-50 p-4 rounded">
+            No ingredients found.
+          </p>
         )}
       </div>
 
+      {/* Floating Action Button for Adding Ingredient */}
       <button
         onClick={() => setIsAddIngredientOpen(true)}
         className="fixed right-6 bottom-6 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-all duration-300 group z-50"
       >
         <Plus className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300" />
-        <span className="ml-2 font-semibold hidden group-hover:inline">
+        <span className="ml-2 font-semibold text-lg hidden group-hover:inline">
           Add Ingredient
         </span>
       </button>
 
+      {/* Add Ingredient Dialog */}
       {isAddIngredientOpen && (
         <AddIngredientDialog
           isOpen={isAddIngredientOpen}

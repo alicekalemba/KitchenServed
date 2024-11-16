@@ -57,10 +57,3 @@ Format all files in a folder (recommended to run this in the  kitchen-served-fe-
  `npx prettier --write .` (This will use the dev dependeny in the package.json)
 
 These will use the plugin installed in VS code:
-
-``` bash
-1. CMD + Shift + P -> Format Document
-OR
-1. Select the text you want to Prettify
-2. CMD + Shift + P -> Format Selection  
-```
