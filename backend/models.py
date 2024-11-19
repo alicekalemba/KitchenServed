@@ -51,6 +51,7 @@ class Ingredient(Base):
   store_id = Column(Integer, ForeignKey("store.store_id"))
   name = Column(String(50), nullable=False)
   price = Column(DECIMAL)
+  image_url = Column(String(255))
   created_date = Column(TIMESTAMP)
   created_by = Column(String(255))
   updated_date = Column(TIMESTAMP)
