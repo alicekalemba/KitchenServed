@@ -85,6 +85,8 @@ async def create_ingredient(
        return {
           "ingredient_id": db_ingredient.ingredient_id,
           "store_id": db_ingredient.store_id,
+          "store_name": db_ingredient.store.name,
+          "store_location": db_ingredient.store.location,
           "name": db_ingredient.name,
           "price": db_ingredient.price,
           "image_url": db_ingredient.image_url
