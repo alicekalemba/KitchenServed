@@ -15,6 +15,7 @@ const Meals = () => {
     recipe_name: '',
     ingredients: '',
     cooking_time: '',
+    image: null,
   });
 
   const fetchRecipes = async (meal) => {
@@ -63,6 +64,7 @@ const Meals = () => {
         recipe_name: '',
         ingredients: '',
         cooking_time: '',
+        image: null
       });
       toast.success('Recipe added successfully!', {
         duration: 3000,

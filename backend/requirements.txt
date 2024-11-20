@@ -5,3 +5,4 @@ psycopg2
 sqlalchemy
 boto3==1.29.7
 python-multipart
+python-dotenv

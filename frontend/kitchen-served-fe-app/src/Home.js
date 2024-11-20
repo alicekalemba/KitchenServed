@@ -17,6 +17,7 @@ const Home = () => {
     recipe_name: '',
     ingredients: '',
     cooking_time: '',
+    image: null,
   });
 
   useEffect(() => {
@@ -66,10 +67,25 @@ const Home = () => {
   };
 
   const handleAddRecipe = async () => {
+    const formData = new FormData();
+    formData.append('recipe_name', newRecipe.recipe_name);
+    formData.append('meal_id', newRecipe.meal_id);
+    formData.append('ingredients', newRecipe.ingredients);
+    formData.append('cooking_time', newRecipe.cooking_time);
+
+    if (newRecipe.image) {
+      formData.append('image', newRecipe.image);
+    }
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/recipes`,
-        newRecipe
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
       );
       setRecipes([...recipes, response.data]);
       setIsAddRecipeOpen(false);
@@ -78,6 +94,7 @@ const Home = () => {
         recipe_name: '',
         ingredients: '',
         cooking_time: '',
+        image: null
       });
       toast.success('Recipe added successfully!', {
         duration: 3000,

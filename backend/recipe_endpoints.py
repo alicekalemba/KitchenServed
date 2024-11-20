@@ -10,11 +10,13 @@ from typing import List, Optional
 from botocore.exceptions import ClientError
 from .models import Recipe,Meal, SessionLocal
 from .schemas import RecipeCreate, RecipeResponse, RecipeUpdate
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+load_dotenv()
 s3_client = boto3.client('s3', aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"), aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
 S3_BUCKET_NAME = "kitchen-served-images"
 
