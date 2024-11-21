@@ -12,6 +12,7 @@ from .models import Recipe,Meal, SessionLocal
 from .schemas import RecipeCreate, RecipeResponse, RecipeUpdate
 from dotenv import load_dotenv
 from .s3utils import upload_image_to_s3
+from .constants import RECIPE_IMAGES_FOLDER
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +95,7 @@ async def create_recipe(
         if image:
             if not image.content_type.startswith('image/'):
                 raise HTTPException(status_code=400, detail="File must be an image")
-            image_url = await upload_image_to_s3(image,"recipe-images")
+            image_url = await upload_image_to_s3(image,RECIPE_IMAGES_FOLDER)
 
         # Create recipe
         db_recipe = Recipe(

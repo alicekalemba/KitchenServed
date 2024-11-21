@@ -11,6 +11,7 @@ from .models import Ingredient, SessionLocal
 from .schemas import IngredientCreate, IngredientUpdate, IngredientResponse
 from dotenv import load_dotenv
 from .s3utils import upload_image_to_s3
+from .constants import INGREDIENT_IMAGES_FOLDER
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ async def create_ingredient(
        if image:
           if not image.content_type.startswith('image/'):
              raise HTTPException(status_code=400, detail="File must be an image")
-          image_url = await upload_image_to_s3(image, "ingredient-images")
+          image_url = await upload_image_to_s3(image, INGREDIENT_IMAGES_FOLDER)
 
        db_ingredient = Ingredient(
           store_id=store_id,
