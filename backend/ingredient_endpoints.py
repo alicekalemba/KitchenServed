@@ -10,13 +10,10 @@ from botocore.exceptions import ClientError
 from .models import Ingredient, SessionLocal
 from .schemas import IngredientCreate, IngredientUpdate, IngredientResponse
 from dotenv import load_dotenv
+from .s3utils import upload_image_to_s3
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
-
-load_dotenv()
-s3_client = boto3.client('s3', aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"), aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
-S3_BUCKET_NAME = "kitchen-served-images"
 
 def get_db():
   db = SessionLocal()
@@ -24,34 +21,6 @@ def get_db():
     yield db
   finally:
     db.close()
-
-async def upload_image_to_s3(file: UploadFile) -> str:
-    """
-    Upload an image to S3 and return the URL
-    """
-    try:
-        file_extension = file.filename.split('.')[-1]
-        unique_filename = f"{uuid.uuid4()}.{file_extension}"
-
-        contents = await file.read()
-
-        s3_client.put_object(
-            Bucket=S3_BUCKET_NAME,
-            Key=f"ingredient-images/{unique_filename}",
-            Body=contents,
-            ContentType=file.content_type
-        )
-
-        image_url = f"ingredient-images/{unique_filename}"
-        return image_url
-
-    except ClientError as e:
-        logger.error(f"Error uploading to S3: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to upload image")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to process image")
-
 
 @router.post("/api/ingredients", response_model=IngredientResponse)
 async def create_ingredient(
@@ -67,7 +36,7 @@ async def create_ingredient(
        if image:
           if not image.content_type.startswith('image/'):
              raise HTTPException(status_code=400, detail="File must be an image")
-          image_url = await upload_image_to_s3(image)
+          image_url = await upload_image_to_s3(image, "ingredient-images")
 
        db_ingredient = Ingredient(
           store_id=store_id,

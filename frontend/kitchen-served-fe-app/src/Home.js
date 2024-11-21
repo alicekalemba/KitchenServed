@@ -5,7 +5,6 @@ import { ChefHat, Plus } from 'lucide-react';
 import { getTimeOfDay } from './utils/timeUtils';
 import AddRecipeDialog from './components/home/AddRecipeDialog';
 import toast, { Toaster } from 'react-hot-toast';
-import MenuComponent from './components/MenuComponent';
 
 const Home = () => {
   const [timeOfDay, setTimeOfDay] = useState('');
