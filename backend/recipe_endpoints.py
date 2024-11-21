@@ -95,7 +95,7 @@ async def create_recipe(
         if image:
             if not image.content_type.startswith('image/'):
                 raise HTTPException(status_code=400, detail="File must be an image")
-            image_url = await upload_image_to_s3(image,RECIPE_IMAGES_FOLDER)
+            image_url = await upload_image_to_s3(image, RECIPE_IMAGES_FOLDER)
 
         # Create recipe
         db_recipe = Recipe(
