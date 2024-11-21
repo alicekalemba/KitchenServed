@@ -1,0 +1,1 @@
+ALTER TABLE kitchen_served.ingredient ALTER COLUMN image_url DROP NOT NULL;

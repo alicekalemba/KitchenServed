@@ -38,6 +38,8 @@ async def create_ingredient(
           if not image.content_type.startswith('image/'):
              raise HTTPException(status_code=400, detail="File must be an image")
           image_url = await upload_image_to_s3(image, INGREDIENT_IMAGES_FOLDER)
+       else:
+          image_url = None
 
        db_ingredient = Ingredient(
           store_id=store_id,
