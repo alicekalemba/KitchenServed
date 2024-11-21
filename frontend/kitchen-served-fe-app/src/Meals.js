@@ -79,6 +79,25 @@ const Meals = () => {
     }
   };
 
+  const handleDeleteRecipe = async (recipeId) => {
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/recipes/${recipeId}`
+      );
+      setRecipes(recipes.filter((recipe) => recipe.recipe_id !== recipeId));
+      toast.success('Recipe deleted successfully!', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      toast.error('Failed to delete recipe. Please try again.', {
+        duration: 5000,
+        position: 'top-center',
+      });
+    }
+  };
+
   return (
     <div className="p-8">
       <Toaster />
@@ -122,7 +141,7 @@ const Meals = () => {
                   key={index}
                   className="mb-6 transform hover:scale-105 transition-transform duration-200"
                 >
-                  <RecipeCard recipe={recipe} />
+                  <RecipeCard recipe={recipe} onDelete={handleDeleteRecipe} />
                 </div>
               ))
             ) : (
