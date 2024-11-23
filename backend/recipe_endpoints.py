@@ -129,3 +129,36 @@ async def create_recipe(
         logger.error(f"Error creating recipe: {str(e)}")
         db.rollback()
         raise HTTPException(status_code=500, detail="Failed to create recipe")
+@router.put("/api/recipes/{recipe_id}/upload-photo")
+async def upload_recipe_photo(
+    recipe_id: int,
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    try:
+        db_recipe = db.query(Recipe).filter(Recipe.recipe_id == recipe_id).first()
+        if not db_recipe:
+            raise HTTPException(status_code=404, detail="Recipe not found")
+
+        if not image.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+
+        image_url = await upload_image_to_s3(image, RECIPE_IMAGES_FOLDER)
+
+        db_recipe.image_url = image_url
+        db.commit()
+        db.refresh(db_recipe)
+
+        return {
+            "message": "Recipe photo updated successfully",
+            "recipe_id": db_recipe.recipe_id,
+            "image_url": db_recipe.image_url,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating recipe photo: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to update recipe photo")
+

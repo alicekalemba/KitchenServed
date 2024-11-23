@@ -79,12 +79,12 @@ const Home = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/recipes`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       setRecipes([...recipes, response.data]);
       setIsAddRecipeOpen(false);
@@ -93,7 +93,7 @@ const Home = () => {
         recipe_name: '',
         ingredients: '',
         cooking_time: '',
-        image: null
+        image: null,
       });
       toast.success('Recipe added successfully!', {
         duration: 3000,
@@ -102,6 +102,41 @@ const Home = () => {
     } catch (error) {
       console.error('Error adding recipe:', error);
       toast.error('Failed to add recipe. Please try again.', {
+        duration: 5000,
+        position: 'top-center',
+      });
+    }
+  };
+
+  const handleUpdateRecipePhoto = async (recipeId, file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/recipes/${recipeId}/upload-photo`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      const updatedRecipes = recipes.map((recipe) =>
+        recipe.recipe_id === recipeId
+          ? { ...recipe, image_url: response.data.image_url }
+          : recipe
+      );
+      setRecipes(updatedRecipes);
+
+      toast.success('Photo updated successfully!', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error('Error updating recipe photo:', error);
+      toast.error('Failed to update photo. Please try again.', {
         duration: 5000,
         position: 'top-center',
       });
@@ -182,7 +217,11 @@ const Home = () => {
                   key={index}
                   className="mb-6 transform hover:scale-105 transition-transform duration-200"
                 >
-                  <RecipeCard recipe={recipe} onDelete={handleDeleteRecipe} />
+                  <RecipeCard
+                    recipe={recipe}
+                    onDelete={handleDeleteRecipe}
+                    onUpdatePhoto={handleUpdateRecipePhoto}
+                  />
                 </div>
               ))
             ) : (
