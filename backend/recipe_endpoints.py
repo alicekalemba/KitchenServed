@@ -11,7 +11,7 @@ from botocore.exceptions import ClientError
 from .models import Recipe,Meal, SessionLocal
 from .schemas import RecipeCreate, RecipeResponse, RecipeUpdate
 from dotenv import load_dotenv
-from .s3utils import upload_image_to_s3
+from .s3utils import upload_image_to_s3, delete_image_from_s3
 from .constants import RECIPE_IMAGES_FOLDER
 
 logger = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ def delete_ingredient(recipe_id: int, db: Session = Depends(get_db)):
   db.commit()
   return {"detail": "Recipe deleted successfully"}
 
-@router.post("/api/recipes")
+@router.post("/api/recipes", status_code=201)
 async def create_recipe(
         recipe_name: str = Form(...),
         meal_id: int = Form(...),
@@ -129,3 +129,48 @@ async def create_recipe(
         logger.error(f"Error creating recipe: {str(e)}")
         db.rollback()
         raise HTTPException(status_code=500, detail="Failed to create recipe")
+
+@router.put("/api/recipes/{recipe_id}/upload-photo")
+async def upload_recipe_photo(
+    recipe_id: int,
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    try:
+        # Retrieve the recipe
+        db_recipe = db.query(Recipe).filter(Recipe.recipe_id == recipe_id).first()
+        if not db_recipe:
+            raise HTTPException(status_code=404, detail="Recipe not found")
+
+        # Validate the image
+        if not image.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+
+        # Retrieve the current image URL
+        old_image_url = db_recipe.image_url
+
+        # Upload the new image to S3
+        image_url = await upload_image_to_s3(image, RECIPE_IMAGES_FOLDER)
+
+        # Update the database with the new image URL
+        db_recipe.image_url = image_url
+        db.commit()
+        db.refresh(db_recipe)
+
+        if old_image_url:
+            # Delete the current image from S3
+            await delete_image_from_s3(old_image_url)
+
+        return {
+            "message": "Recipe photo updated successfully",
+            "recipe_id": db_recipe.recipe_id,
+            "image_url": db_recipe.image_url,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating recipe photo: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to update recipe photo")
+

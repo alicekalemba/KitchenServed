@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MoreVertical, Trash2 } from 'lucide-react';
+import { MoreVertical, Trash2, Image } from 'lucide-react';
 
-export const RecipeCard = ({ recipe, onDelete }) => {
+export const RecipeCard = ({ recipe, onDelete, onUpdatePhoto }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -23,6 +23,14 @@ export const RecipeCard = ({ recipe, onDelete }) => {
   const handleDelete = () => {
     onDelete(recipe.recipe_id);
     setIsMenuOpen(false);
+  };
+
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      onUpdatePhoto(recipe.recipe_id, file);
+      setIsMenuOpen(false);
+    }
   };
 
   return (
@@ -58,6 +66,24 @@ export const RecipeCard = ({ recipe, onDelete }) => {
         {isMenuOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
             <ul className="py-1">
+              {/* Edit Photo */}
+              <li>
+                <label
+                  htmlFor={`file-upload-${recipe.recipe_id}`}
+                  className="px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 w-full text-left flex items-center cursor-pointer"
+                >
+                  <Image size={16} className="mr-2" /> Edit Photo
+                </label>
+                <input
+                  id={`file-upload-${recipe.recipe_id}`}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                />
+              </li>
+
+              {/* Delete */}
               <li>
                 <button
                   onClick={handleDelete}

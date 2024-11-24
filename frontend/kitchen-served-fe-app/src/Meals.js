@@ -42,7 +42,7 @@ const Meals = () => {
     formData.append('ingredients', newRecipe.ingredients);
     formData.append('cooking_time', newRecipe.cooking_time);
 
-    // Add the image file if selected
+
     if (newRecipe.image) {
       formData.append('image', newRecipe.image);
     }
@@ -78,6 +78,42 @@ const Meals = () => {
       });
     }
   };
+
+  const handleUpdateRecipePhoto = async (recipeId, file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_URL}/recipes/${recipeId}/upload-photo`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      const updatedRecipes = recipes.map((recipe) =>
+        recipe.recipe_id === recipeId
+          ? { ...recipe, image_url: response.data.image_url }
+          : recipe
+      );
+      setRecipes(updatedRecipes);
+  
+      toast.success("Photo updated successfully!", {
+        duration: 3000,
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error updating recipe photo:", error);
+      toast.error("Failed to update photo. Please try again.", {
+        duration: 5000,
+        position: "top-center",
+      });
+    }
+  };
+  
 
   const handleDeleteRecipe = async (recipeId) => {
     try {
@@ -141,7 +177,7 @@ const Meals = () => {
                   key={index}
                   className="mb-6 transform hover:scale-105 transition-transform duration-200"
                 >
-                  <RecipeCard recipe={recipe} onDelete={handleDeleteRecipe} />
+                  <RecipeCard recipe={recipe} onDelete={handleDeleteRecipe} onUpdatePhoto={handleUpdateRecipePhoto} />
                 </div>
               ))
             ) : (
