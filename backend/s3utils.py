@@ -41,3 +41,17 @@ async def upload_image_to_s3(file: UploadFile, folder: str) -> str:
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to process image")
+
+async def delete_image_from_s3(location: str):
+    try:
+        s3_client.delete_object(
+            Bucket=S3_BUCKET_NAME,
+            Key=location
+        )
+        logger.info(f"Deleted image from S3: {location}")
+    except ClientError as e:
+        logger.error(f"Error deleting from S3: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete image")
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete image")
